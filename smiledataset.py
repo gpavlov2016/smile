@@ -11,7 +11,7 @@ positive_paths = glob('SMILEsmileD-master/SMILEs/positives/positives7/*.jpg')
 
 
 
-def examples_to_dataset(examples, block_size=2):
+def examples_to_dataset(examples, block_size=1):
     train_X = [] # pixels
     train_y = [] # labels
     test_X = []
