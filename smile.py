@@ -15,9 +15,9 @@ import smiledataset
 run = wandb.init()
 config = run.config
 
-config.epochs = 50
+config.epochs = 3
 config.dropout = 0.5
-config.batch_size = 32
+config.batch_size = 128
 config.lr = 1e-4
 config.num_classes = 2
 
@@ -56,10 +56,9 @@ datagen = ImageDataGenerator(
     zoom_range=0.3,
     width_shift_range=0.2,
     height_shift_range=0.2,
-    horizontal_flip=True,
-    zca_whitening=True)
+    horizontal_flip=True)
 
-valgen = ImageDataGenerator(zca_whitening=True)
+#valgen = ImageDataGenerator(zca_whitening=True)
 
 
 # compute quantities required for featurewise normalization
@@ -120,14 +119,14 @@ import matplotlib.pyplot as plt
 if os.path.isfile(filepath):
   print('Backing up weights file')
   copyfile(filepath, filepath + '.backup')
-#  print('Loading weights from ', filepath)
-#  model.load_weights(filepath)
+  print('Loading weights from ', filepath)
+  model.load_weights(filepath)
 
 model.fit_generator(datagen.flow(train_X, train_y, batch_size = config.batch_size),
                     steps_per_epoch = len(train_X) / config.batch_size,
                     epochs=config.epochs, verbose=1,
-                    validation_data=datagen.flow(test_X, test_y), 
-#                    validation_data=(test_X, test_y), 
+#                    validation_data=datagen.flow(test_X, test_y), 
+                    validation_data=(test_X, test_y), 
                     callbacks=callbacks_list)
 
 '''
